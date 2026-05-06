@@ -57,10 +57,12 @@ export async function callGeminiVision({
   systemPrompt,
   userText,
   imagen,
+  images,
 }: {
   systemPrompt: string;
   userText: string;
-  imagen: { mediaType: string; base64: string };
+  imagen?: { mediaType: string; base64: string };
+  images?: { mediaType: string; base64: string }[];
 }): Promise<string> {
   try {
     const model = genAI.getGenerativeModel({ 
@@ -68,15 +70,19 @@ export async function callGeminiVision({
       systemInstruction: systemPrompt
     });
 
-    const partes: any[] = [
-      { text: userText },
-      {
+    const partes: any[] = [{ text: userText }];
+    
+    // Aceptar imagen singular o images plural
+    const imagenesToUse = images || (imagen ? [imagen] : []);
+    
+    for (const img of imagenesToUse) {
+      partes.push({
         inlineData: {
-          mimeType: imagen.mediaType,
-          data: imagen.base64,
+          mimeType: img.mediaType,
+          data: img.base64,
         },
-      },
-    ];
+      });
+    }
 
     const resultado = await model.generateContent(partes);
     const respuesta = resultado.response;

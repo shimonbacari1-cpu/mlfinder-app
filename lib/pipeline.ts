@@ -48,7 +48,7 @@ async function extraerAtributos(
   const respuesta = await callGeminiVision({
     systemPrompt: SYSTEM_EXTRACCION,
     userText: "Analizá esta imagen y devolveme los atributos en JSON.",
-    images: [imagen],
+    imagen: imagen,
   });
   return extraerJSON<AtributosExtraidos>(respuesta);
 }

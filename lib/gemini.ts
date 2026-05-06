@@ -2,7 +2,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY || "");
 
-export const MODEL = "gemini-2.0-flash-exp";
+export const MODEL = "gemini-1.5-flash";
 
 export class AIError extends Error {
   tipo: "rate_limit" | "timeout" | "interno";
